@@ -1,55 +1,70 @@
+import Image from "next/image";
 import { getCurrentGuest } from "@/lib/current-guest";
+import pageAttendance from "@/Birthday Assets/page-attendance.png";
+import iconWishlist from "@/Birthday Assets/icon-wishlist.png";
+import iconGuestlist from "@/Birthday Assets/icon-guestlist.png";
+import iconNotAttend from "@/Birthday Assets/icon-not-attend.png";
+import iconHelp from "@/Birthday Assets/icon-help.png";
+import { CircleCardPage } from "@/components/CircleCardPage";
+import { PageSection } from "@/components/PageSection";
 
 export const dynamic = "force-dynamic";
 
 export default async function AttendingPage() {
   const guest = await getCurrentGuest();
 
+  const name =
+    guest?.display_name?.split(" ")[0] ??
+    guest?.display_name ??
+    "Friend";
+
+  const icons = [
+    { src: iconWishlist, alt: "Wishlist icon", label: "Wishlist" },
+    { src: iconGuestlist, alt: "Guest list icon", label: "Guestlist" },
+    {
+      src: iconNotAttend,
+      alt: "Not attending icon",
+      label: "Not-attending",
+    },
+    { src: iconHelp, alt: "Help icon", label: "Help" },
+  ];
+
   return (
-    <div className="space-y-5">
-      <div className="space-y-2">
-        <p className="text-xs font-medium uppercase tracking-wide text-emerald-600">
-          RSVP received
-        </p>
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
-          {guest ? `Amazing, ${guest.display_name}!` : "Amazing!"}
-        </h1>
-        <p className="text-sm text-slate-600">
-          We&apos;re so excited to celebrate with you. You&apos;ll get a
-          reminder with full details closer to the day.
-        </p>
-      </div>
-
-      <div className="space-y-3 rounded-2xl bg-emerald-50 px-4 py-3 text-xs text-emerald-900">
-        <p className="font-semibold uppercase tracking-wide text-emerald-700">
-          Event details
-        </p>
-        <p>
-          <span className="font-medium">When:</span> Saturday · 7:00 PM
-        </p>
-        <p>
-          <span className="font-medium">Where:</span> Address will be sent to
-          you directly.
-        </p>
-        <p>
-          <span className="font-medium">Dress code:</span> Soft party — comfy
-          but cute.
-        </p>
-      </div>
-
-      <div className="space-y-2 text-xs text-slate-500">
-        <p>
-          Plans changed? You can update your answer at any time — just head
-          back to the RSVP page.
-        </p>
-        <a
-          href="/rsvp"
-          className="inline-flex text-xs font-medium text-slate-800 underline underline-offset-4"
-        >
-          Change my RSVP
-        </a>
-      </div>
-    </div>
+    <CircleCardPage
+      withCard={false}
+      footer={
+        <nav className="flex items-center justify-between gap-4">
+          {icons.map((icon) => (
+            <div
+              key={icon.label}
+              className="flex flex-1 flex-col items-center gap-1 text-xs font-medium text-slate-700"
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-50 shadow-sm">
+                <Image
+                  src={icon.src}
+                  alt={icon.alt}
+                  className="h-8 w-8 object-contain"
+                />
+              </div>
+              <span>{icon.label}</span>
+            </div>
+          ))}
+        </nav>
+      }
+    >
+      <PageSection
+        title={`Amazing, ${name}!`}
+        description="We’re so excited to celebrate with you."
+      >
+        <div className="relative flex w-full justify-center">
+          <Image
+            src={pageAttendance}
+            alt="Attendance page illustration"
+            className="h-80 w-auto rounded-2xl object-cover shadow-lg scale-[1.3]"
+            priority
+          />
+        </div>
+      </PageSection>
+    </CircleCardPage>
   );
 }
-

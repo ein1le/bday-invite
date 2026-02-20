@@ -22,11 +22,9 @@ export function PageTransition({ children }: { children: ReactNode }) {
         animate="animate"
         exit="exit"
         transition={{ duration: 0.25 }}
-        className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,_#fde7ff,_#f8fafc)] px-4 py-10 text-slate-900"
+        className="flex min-h-screen flex-col bg-[var(--background)] px-4"
       >
-        <div className="w-full max-w-xl rounded-3xl bg-white/80 p-8 shadow-xl backdrop-blur-md">
-          {children}
-        </div>
+        {children}
       </motion.main>
     </AnimatePresence>
   );

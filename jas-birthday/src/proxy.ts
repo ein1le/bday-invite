@@ -3,7 +3,7 @@ import { SESSION_COOKIE_NAME, verifySessionToken } from "./lib/session";
 
 const PROTECTED_ROUTES = ["/rsvp", "/attending", "/not-attending"];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const isProtected = PROTECTED_ROUTES.some((route) =>

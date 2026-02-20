@@ -1,5 +1,11 @@
-import { Hero } from "@/components/Hero";
+import { getAllGuestsForLogin } from "@/lib/guests";
+import LandingExperience from "./LandingExperience";
 
-export default function Home() {
-  return <Hero />;
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const guests = await getAllGuestsForLogin();
+
+  return <LandingExperience guests={guests} />;
 }
+

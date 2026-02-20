@@ -10,9 +10,10 @@ type LoginFormProps = {
     username: string;
     displayName: string;
   }[];
+  onSuccess?: () => void;
 };
 
-export default function LoginForm({ guests }: LoginFormProps) {
+export default function LoginForm({ guests, onSuccess }: LoginFormProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [username, setUsername] = useState(
@@ -44,9 +45,13 @@ export default function LoginForm({ guests }: LoginFormProps) {
         return;
       }
 
-      const target = from && from.startsWith("/") ? from : "/rsvp";
-      router.push(target);
-      router.refresh();
+      if (onSuccess) {
+        onSuccess();
+      } else {
+        const target = from && from.startsWith("/") ? from : "/rsvp";
+        router.push(target);
+        router.refresh();
+      }
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {
@@ -102,7 +107,7 @@ export default function LoginForm({ guests }: LoginFormProps) {
       <motion.button
         type="submit"
         disabled={isSubmitting || !username || !password}
-        className="flex w-full items-center justify-center rounded-full bg-slate-900 px-4 py-2.5 text-sm font-medium text-slate-50 shadow-md transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-400"
+        className="flex w-full items-center justify-center rounded-full bg-rose-500 px-4 py-2.5 text-sm font-medium text-white shadow-md transition hover:bg-rose-600 disabled:cursor-not-allowed disabled:bg-rose-300"
         whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
         whileTap={{ scale: isSubmitting ? 1 : 0.97 }}
       >
@@ -120,4 +125,3 @@ export default function LoginForm({ guests }: LoginFormProps) {
     </form>
   );
 }
-
