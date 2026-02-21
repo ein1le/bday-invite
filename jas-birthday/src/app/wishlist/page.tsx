@@ -55,16 +55,21 @@ const productImageMap: Record<string, StaticImageData> = {
 export const dynamic = "force-dynamic";
 
 type WishlistPageProps = {
-  searchParams?: {
+  searchParams?: Promise<{
     from?: string;
-  };
+  }>;
 };
 
 export default async function WishlistPage({ searchParams }: WishlistPageProps) {
   const guest = await getCurrentGuest();
   const products = await getProductsWithReservationState(guest?.id ?? null);
 
-  const from = searchParams?.from === "not-attending" ? "/not-attending" : "/attending";
+  const resolvedSearchParams = (await searchParams) ?? {};
+
+  const from =
+    resolvedSearchParams.from === "not-attending"
+      ? "/not-attending"
+      : "/attending";
 
   return (
     <BannerPage

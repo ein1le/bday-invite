@@ -6,15 +6,20 @@ import { getGuestsWithResponses } from "@/lib/guests";
 export const dynamic = "force-dynamic";
 
 type GuestlistPageProps = {
-  searchParams?: {
+  searchParams?: Promise<{
     from?: string;
-  };
+  }>;
 };
 
 export default async function GuestlistPage({ searchParams }: GuestlistPageProps) {
   const guests = await getGuestsWithResponses();
 
-  const from = searchParams?.from === "not-attending" ? "/not-attending" : "/attending";
+  const resolvedSearchParams = (await searchParams) ?? {};
+
+  const from =
+    resolvedSearchParams.from === "not-attending"
+      ? "/not-attending"
+      : "/attending";
 
   return (
     <BannerPage

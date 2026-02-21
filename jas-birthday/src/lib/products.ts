@@ -143,7 +143,8 @@ export async function getProductsWithReservationState(
         : [];
 
     const splitByCurrentGuest =
-      Boolean(currentGuestId) && splitGuestIds.includes(currentGuestId);
+      Boolean(currentGuestId) &&
+      splitGuestIds.includes(currentGuestId as string);
 
     const splitCount = splitGuestIds.length;
 

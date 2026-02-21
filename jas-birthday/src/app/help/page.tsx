@@ -6,13 +6,18 @@ import { BannerPage } from "@/components/BannerPage";
 export const dynamic = "force-dynamic";
 
 type HelpPageProps = {
-  searchParams?: {
+  searchParams?: Promise<{
     from?: string;
-  };
+  }>;
 };
 
-export default function HelpPage({ searchParams }: HelpPageProps) {
-  const from = searchParams?.from === "not-attending" ? "/not-attending" : "/attending";
+export default async function HelpPage({ searchParams }: HelpPageProps) {
+  const resolvedSearchParams = (await searchParams) ?? {};
+
+  const from =
+    resolvedSearchParams.from === "not-attending"
+      ? "/not-attending"
+      : "/attending";
 
   return (
     <BannerPage
