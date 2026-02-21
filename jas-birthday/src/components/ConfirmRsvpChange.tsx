@@ -5,19 +5,28 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { subtleFade } from "@/lib/animations";
 
-type RsvpFormProps = {
-  initialStatus: boolean | null;
+type ConfirmRsvpChangeProps = {
+  isAttending: boolean;
+  confirmLabel: string;
+  cancelLabel?: string;
+  cancelHref: string;
+  onCancel?: () => void;
 };
 
-export default function RsvpForm({ initialStatus }: RsvpFormProps) {
+export function ConfirmRsvpChange({
+  isAttending,
+  confirmLabel,
+  cancelLabel = "Keep my current answer",
+  cancelHref,
+  onCancel,
+}: ConfirmRsvpChangeProps) {
   const router = useRouter();
-  const [status, setStatus] = useState<boolean | null>(initialStatus);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function handleSelect(isAttending: boolean) {
+  async function handleConfirm() {
+    if (isSubmitting) return;
     setError(null);
-    setStatus(isAttending);
     setIsSubmitting(true);
 
     try {
@@ -55,54 +64,40 @@ export default function RsvpForm({ initialStatus }: RsvpFormProps) {
     }
   }
 
-  const yesSelected = status === true;
-  const noSelected = status === false;
+  function handleCancel() {
+    if (isSubmitting) return;
+    if (onCancel) {
+      onCancel();
+    } else {
+      router.push(cancelHref);
+    }
+  }
 
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-3 sm:flex-row">
         <motion.button
           type="button"
-          onClick={() => !isSubmitting && handleSelect(true)}
-          className={`btn-pink flex-1 ${isSubmitting ? "cursor-wait opacity-70" : ""} ${
-            yesSelected ? "" : ""
-          }`}
-          whileHover={{
-            scale: isSubmitting ? 1 : 1.01,
-          }}
-          whileTap={{
-            scale: isSubmitting ? 1 : 0.98,
-          }}
+          onClick={handleConfirm}
+          disabled={isSubmitting}
+          className="btn-pink flex-1 disabled:opacity-70"
+          whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+          whileTap={{ scale: isSubmitting ? 1 : 0.97 }}
         >
-          Yes!
+          {confirmLabel}
         </motion.button>
 
         <motion.button
           type="button"
-          onClick={() => !isSubmitting && handleSelect(false)}
-          className={`btn-pink flex-1 ${isSubmitting ? "cursor-wait opacity-70" : ""} ${
-            noSelected ? "" : ""
-          }`}
-          whileHover={{
-            scale: isSubmitting ? 1 : 1.01,
-          }}
-          whileTap={{
-            scale: isSubmitting ? 1 : 0.98,
-          }}
+          onClick={handleCancel}
+          disabled={isSubmitting}
+          className="flex-1 rounded-full border border-current bg-transparent px-4 py-2.5 text-sm font-medium disabled:opacity-70"
+          whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+          whileTap={{ scale: isSubmitting ? 1 : 0.97 }}
         >
-          Nope
+          {cancelLabel}
         </motion.button>
       </div>
-
-      {initialStatus !== null && (
-        <p className="text-xs text-slate-500">
-          You previously responded{" "}
-          <span className="font-medium">
-            {initialStatus ? "attending" : "not attending"}
-          </span>
-          . You can update your answer at any time.
-        </p>
-      )}
 
       {error && (
         <motion.p

@@ -2,7 +2,7 @@
 
 :root {
   --background: #fecdd3; /* solid pink background */
-  --foreground: #171717;
+  --foreground: #f0768b;
 }
 
 @theme inline {
@@ -10,6 +10,22 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-libre-baskerville);
   --font-mono: var(--font-geist-mono);
+}
+
+@layer components {
+  .btn-pink {
+    @apply inline-flex items-center justify-center rounded-full px-4 py-2.5 text-sm font-medium text-white shadow-md transition-colors;
+    background-color: #f0768b;
+  }
+
+  .btn-pink:hover:not(:disabled) {
+    background-color: #e05f76;
+  }
+
+  .btn-pink:disabled {
+    cursor: not-allowed;
+    background-color: #f6a3b3;
+  }
 }
 
 html,

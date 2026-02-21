@@ -12,8 +12,8 @@ export default async function RsvpPage() {
   return (
     <CircleCardPage>
       <PageSection
-        title={`Hi, ${firstName}!`}
-        description="Can you make it to the celebration?"
+        title="Will you be attending Jaslyn's 21st Birthday Party"
+        align="center"
       >
         <RsvpForm initialStatus={guest?.is_attending ?? null} />
       </PageSection>

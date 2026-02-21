@@ -12,6 +12,12 @@ export type PublicGuest = {
   displayName: string;
 };
 
+export type GuestWithResponse = {
+  id: string;
+  displayName: string;
+  isAttending: boolean;
+};
+
 export async function getAllGuestsForLogin(): Promise<PublicGuest[]> {
   const supabase = getServiceClient();
 
@@ -70,3 +76,25 @@ export async function updateGuestRsvp(
   }
 }
 
+export async function getGuestsWithResponses(): Promise<GuestWithResponse[]> {
+  const supabase = getServiceClient();
+
+  const { data, error } = await supabase
+    .from("guests")
+    .select("id, display_name, is_attending")
+    .not("is_attending", "is", null)
+    .order("display_name", { ascending: true });
+
+  if (error) {
+    console.error("Error fetching guests with responses:", error);
+    throw new Error("Unable to load guest responses.");
+  }
+
+  return (
+    data?.map((row) => ({
+      id: row.id as string,
+      displayName: row.display_name as string,
+      isAttending: Boolean(row.is_attending),
+    })) ?? []
+  );
+}

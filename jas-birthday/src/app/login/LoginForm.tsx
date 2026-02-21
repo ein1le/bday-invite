@@ -107,7 +107,7 @@ export default function LoginForm({ guests, onSuccess }: LoginFormProps) {
       <motion.button
         type="submit"
         disabled={isSubmitting || !username || !password}
-        className="flex w-full items-center justify-center rounded-full bg-rose-500 px-4 py-2.5 text-sm font-medium text-white shadow-md transition hover:bg-rose-600 disabled:cursor-not-allowed disabled:bg-rose-300"
+        className="btn-pink w-full disabled:opacity-70"
         whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
         whileTap={{ scale: isSubmitting ? 1 : 0.97 }}
       >

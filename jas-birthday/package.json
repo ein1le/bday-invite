@@ -6,7 +6,9 @@
     "dev": "next dev --webpack",
     "build": "next build --webpack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed:guests": "node scripts/seed-guests.mjs",
+    "seed:products": "node scripts/seed-products.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.48.0",

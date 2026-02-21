@@ -22,7 +22,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
         animate="animate"
         exit="exit"
         transition={{ duration: 0.25 }}
-        className="flex min-h-screen flex-col bg-[var(--background)] px-4"
+        className="flex h-screen flex-col bg-[var(--background)] px-4 overflow-hidden"
       >
         {children}
       </motion.main>

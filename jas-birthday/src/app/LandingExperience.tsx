@@ -89,7 +89,7 @@ export default function LandingExperience({ guests }: LandingExperienceProps) {
           <Image
             src={pageRsvp}
             alt="RSVP preview"
-            className="h-80 w-auto rounded-2xl object-cover shadow-lg scale-[1.3]"
+            className="h-80 w-auto rounded-2xl object-cover shadow-lg"
           />
         </motion.button>
       )}
